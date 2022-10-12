@@ -57,7 +57,7 @@ An object is *iterable* if it is either a physically stored sequence in memory, 
 
 The *generator* comprehension expression is such an object: its values aren't stored in memory all at once, but are produced as requested, usually by iteration tools.
 
-The list comprehensio, though, and related functional programming tools like *map* and *filter*, will often run faster than a *for* loop today on some types of code.
+The list comprehension, though, and related functional programming tools like *map* and *filter*, will often run faster than a *for* loop today on some types of code.
 
 ## Other Core Types
 
