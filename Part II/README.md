@@ -278,7 +278,7 @@ Sets are something of a category unto themselves (they don't map keys to values 
 
 # Chapter 8 - Lists and Dictionaries
 
-> Unlike + concatenation, __append__ doesn't have to generate new objectsm, so it's usually faster than +, too. You can also mimic __append__ with the clever slice assignments of the prior section: L[len(l):]=[X] is like L.append(X), and L[:0] = [X] is like appending at the front of a list. Both delete an empty slice and insert X, changing L in place quickly, like append. Both are arguably more complex than list methods, though. For instance, L.insert(0, X) can also append an item to the front of a list, and seems noticeably more mnemonic; L.insert(len(L), X) inserts one object at the end too, but unless you like typing, you might as well use L.append(X)!
+> Unlike + concatenation, __append__ doesn't have to generate new objects, so it's usually faster than +, too. You can also mimic __append__ with the clever slice assignments of the prior section: L[len(l):]=[X] is like L.append(X), and L[:0] = [X] is like appending at the front of a list. Both delete an empty slice and insert X, changing L in place quickly, like append. Both are arguably more complex than list methods, though. For instance, L.insert(0, X) can also append an item to the front of a list, and seems noticeably more mnemonic; L.insert(len(L), X) inserts one object at the end too, but unless you like typing, you might as well use L.append(X)!
 
 ## Dictionary Usage Notes
 
