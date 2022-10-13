@@ -153,3 +153,24 @@ One common way to use the somewhat unusual behaviour of Python Boolean operators
     X = A or B or C or None
 
 When we define new object types with classes, we can specify their Boolean nature with either the `__bool__` or `__len__` methods. The latter of these is tried if the former is absent and designates false by returning a length of zero.
+
+# Chapter 13 - while and for Loops
+
+## Loop else
+
+Determine whether a positive integer `y` is prime by searching for factors greater than 1:
+
+    x = y // 2                              # For some y>1
+    while x > 1:
+        if y % x == 0:                      # Remainder
+            print(y, ' has factor ', x)
+            break                           # Skip else
+        x -= 1
+    else:                                   # Normal exit
+        print(y, ' is prime')
+
+Rather than setting a flag to be tested when the loop is exited, it inserts a `break` where a factor is found. This way, the loop `else` clause can assume that it will be executed only if no factor is found; if you don't hit the `break`, the number is prime.
+
+## Nonexhaustive Traversals: range Versus Slices
+
+The potential advantage to using `range` instead is space: slicing makes a copy of the string, while range does not create a list; for very large strings, they may save memory.
