@@ -129,3 +129,27 @@ Here, we reset `sys.stdout` to a manually opened file named *log.txt*:
     print(x, y, x)                          # Shows up in log.txt
 
 The `print` operations are happy to keep calling `sys.stdout`'s `write` method, no matter what `sys.stdout` happens to refer to. Because there is just one `sys` module in your process, assigning `sys.stdout` this way will redirect every `print` anywhere in your program.
+
+# Chapter 12 - if Tests and Syntax Rules
+
+## Multiway Branching
+
+You usually code *multiway branching* as a series of `if`/`elif` tests and occasionally by indexing dictionaries or searching lists. Because dictionaries and lists can be buit at runtime dynamically, they are sometimes more flexible that hardcoded `if` logic in scripts:
+
+    >>> branch = {
+        'spam': 1.25,
+        'ham': 1.99,
+        'eggs': 0.99,
+    }
+    >>> print(branch.get('spam', 'Bad choice'))
+    1.25
+
+Though `if`/`elif` tests are perhaps more readable, the potential downside of it is that, short of constructing it as a string and running it with tools like `eval` or `exec`, you cannot construct it at runtimes as easily as a dictionary. In more dynamic programs, data structures offer added flexibility.
+
+## Why You Will Care: Booleans
+
+One common way to use the somewhat unusual behaviour of Python Boolean operators is to select from a set of objects with an `or`:
+
+    X = A or B or C or None
+
+When we define new object types with classes, we can specify their Boolean nature with either the `__bool__` or `__len__` methods. The latter of these is tried if the former is absent and designates false by returning a length of zero.
