@@ -174,3 +174,69 @@ Rather than setting a flag to be tested when the loop is exited, it inserts a `b
 ## Nonexhaustive Traversals: range Versus Slices
 
 The potential advantage to using `range` instead is space: slicing makes a copy of the string, while range does not create a list; for very large strings, they may save memory.
+
+# Chapter 14 - Iterations and Comprehensions
+
+## Iterations: A First Look
+
+An object is considered *iterable* if it is either a physically stored sequence, or an object that produces one result at a time in the context of an iteration tool like a `for` loop. In a sense, iterable objects include both physical sequences and *virtual sequences* computed on demand.
+
+*Iteration protocol* - any object with a `__next__` method to advance to a next result, which raises `StopIteration` at the end of the series of results, is considered an iterator in Python. Any such object may also be stepped through with a `for` loop or other iteration tool, because all iteration tools normally work internally by calling `__next__` on each iteration and catching the `StopIteration` exception to determine when to exit. For some objects the full protocol includes an additional first step to call `iter`, but this isn't required for files.
+
+    >>> for line in open('script2.py'):     # Use file iteratiors to read by lines
+    ...     print(line.upper(), end='')     # Calls __next__, catches StopIteration
+
+This is considered the *best* way to read text files line by line today, for three reasons: it's the simplest to code, might be the quickest to run, and is the best in terms of memory usage.
+
+`while` loop may run slower than the iterator-based `for` loop version, because iterators run at C language speed inside Python, whereas the `while` loop version runs Python byte code through the Python virtual machine.
+
+Technically, there is one more piece to the iteration protocol. When the `for` loop begins, it first obtains an iterator from the iterable object by passing it to the `iter` built-in function; the object returned by `iter` in turn has the required `next` method. The `iter` function internally runs the `__iter__` method, much like `next` and `__next__`.
+
+Full iteration protocol, used by every iteration tool in Python, and supported by a wide variety of object types:
+
+- The *iterable* object you request iteration for, whose `__iter__` is run by `iter`
+- The *iterator* object returned by the iterable that actually produces values during the iteration, whose `__next__` is run by `next` and raises `StopIteration` when finished producing results.
+
+![IterationProtocol](../materials/iteration_protocol.png)
+
+## List Comprehension Basics
+
+Depending on your Python and code, list comprehensions might run much faster than manual `for` loop statements (often roughly twice as fast) because their iterations are performed at C language speed inside the interpreter, rather than with manual Python code. Especially for larger data sets, there is often a major performance advantage to using this expression.
+
+Anytime we start thinking about performing an operation on each item in a sequence, we're in the realm of list comprehensions.
+
+List comprehensions can become even more complex of we need them to - for instance, they may contain *nested loops*, coded as a series of `for` clauses. In fact, their full syntax allows for any number of `for` clauses, each of which can have an optional associated `if` clause.
+
+    >>> [x + y for x in 'abc' for y in 'lmn']
+    ['al', 'am', 'an', 'bl', 'bm', 'bn', 'cl', 'cm', 'cn']
+
+## Multiple Versus Single Pass Iterators
+
+It's important to see how the `range` object differs from the built-ins described further - it supports `len` and indexing, it is not its own iterator (you make one with `iter` when iterating manually), and it supports multiple iterators over its result that remember their positions independently.
+
+By contrast, `zip`, `map`, and `filter` do not support multiple active iterators on the same result; because of this the `iter` call is optional for stepping through such objects' results - their `iter` is themselves:
+
+    >>> Z = zip((1, 2, 3), (11, 12, 13))
+    >>> I1 = iter(Z)
+    >>> I2 = iter(Z)                        # Two iterators on one zip
+    >>> next(I1)
+    (1, 11)
+    >>> next(I1)
+    (2, 12)
+    >>> next(I2)                            # I2 is at same spot as I1!
+    (3, 13)
+
+    >>> R = range(3)
+    >>> I1, I2 = iter(R), iter(R)           # But range allows many iterators
+    >>> [next(I1), next(I1), next(I1)]
+    [0, 1, 2]
+    >>> next(I2)
+    0
+
+Multiple iterators are usually supported by returning new objects for the `iter` call; a single iterator generally means an object returns itself.
+
+## Other Iteration Topics
+
+- User-defined functions can be turned into iterable *generator functions*, with `yield` statements.
+- List comprehensions morph into iterable *generator expressions* when coded in parenthese.
+- User-defined classes are made iterable with `__iter__` or `__getitem__` *operator overloading*.
