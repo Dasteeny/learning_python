@@ -240,3 +240,11 @@ Multiple iterators are usually supported by returning new objects for the `iter`
 - User-defined functions can be turned into iterable *generator functions*, with `yield` statements.
 - List comprehensions morph into iterable *generator expressions* when coded in parenthese.
 - User-defined classes are made iterable with `__iter__` or `__getitem__` *operator overloading*.
+
+# Chapter 15 - The Documentation Interlude
+
+Documentation strings (docstrings) are considered best for larger, functional documentation, describing the use of modules, functions, classes, and methods in your
+code. Hash-mark comments are today best limited to smaller-scale documentation
+about arcane expressions or statements at strategic points on your code. This is
+partly because docstrings are easier to find in a source file, but also because they
+can be extracted and displayed by the PyDoc system.
